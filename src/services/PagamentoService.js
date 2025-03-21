@@ -1,7 +1,15 @@
 const PagamentoRepository = require('../repositories/PagamentoRepository');
 
 class PagamentoService {
-  async create(pagamentoData) {
+  async create(pagamentoDTO) {
+    // Mapeia o DTO para o modelo do banco de dados
+    const pagamentoData = {
+      valor: pagamentoDTO.valor,
+      status: pagamentoDTO.status,
+      compraId: pagamentoDTO.compraId,
+    };
+
+    // Salva no banco de dados
     return await PagamentoRepository.create(pagamentoData);
   }
 
@@ -13,7 +21,15 @@ class PagamentoService {
     return await PagamentoRepository.findById(id);
   }
 
-  async update(id, pagamentoData) {
+  async update(id, pagamentoDTO) {
+    // Mapeia o DTO para o modelo do banco de dados
+    const pagamentoData = {
+      valor: pagamentoDTO.valor,
+      status: pagamentoDTO.status,
+      compraId: pagamentoDTO.compraId,
+    };
+
+    // Atualiza no banco de dados
     return await PagamentoRepository.update(id, pagamentoData);
   }
 

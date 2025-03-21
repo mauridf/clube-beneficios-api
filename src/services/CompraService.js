@@ -1,7 +1,15 @@
 const CompraRepository = require('../repositories/CompraRepository');
 
 class CompraService {
-  async create(compraData) {
+  async create(compraDTO) {
+    // Mapeia o DTO para o modelo do banco de dados
+    const compraData = {
+      clienteId: compraDTO.clienteId,
+      produtos: compraDTO.produtos,
+      status: compraDTO.status,
+    };
+
+    // Salva no banco de dados
     return await CompraRepository.create(compraData);
   }
 
@@ -13,7 +21,15 @@ class CompraService {
     return await CompraRepository.findById(id);
   }
 
-  async update(id, compraData) {
+  async update(id, compraDTO) {
+    // Mapeia o DTO para o modelo do banco de dados
+    const compraData = {
+      clienteId: compraDTO.clienteId,
+      produtos: compraDTO.produtos,
+      status: compraDTO.status,
+    };
+
+    // Atualiza no banco de dados
     return await CompraRepository.update(id, compraData);
   }
 

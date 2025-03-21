@@ -1,9 +1,21 @@
+const { validate } = require('class-validator');
+const PagamentoDTO = require('../dtos/PagamentoDTO');
 const PagamentoService = require('../services/PagamentoService');
 
 class PagamentoController {
   async create(req, res) {
     try {
-      const pagamento = await PagamentoService.create(req.body);
+      const pagamentoDTO = new PagamentoDTO();
+      Object.assign(pagamentoDTO, req.body); // Copia os dados do corpo da requisição para o DTO
+
+      // Valida o DTO
+      const errors = await validate(pagamentoDTO);
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
+      }
+
+      // Chama o serviço passando o DTO
+      const pagamento = await PagamentoService.create(pagamentoDTO);
       res.status(201).json(pagamento);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -33,7 +45,16 @@ class PagamentoController {
 
   async update(req, res) {
     try {
-      const pagamento = await PagamentoService.update(req.params.id, req.body);
+      const pagamentoDTO = new PagamentoDTO();
+      Object.assign(pagamentoDTO, req.body); // Copia os dados do corpo da requisição para o DTO
+
+      // Valida o DTO
+      const errors = await validate(pagamentoDTO);
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
+      }
+
+      const pagamento = await PagamentoService.update(req.params.id, pagamentoDTO);
       res.status(200).json(pagamento);
     } catch (error) {
       res.status(400).json({ error: error.message });

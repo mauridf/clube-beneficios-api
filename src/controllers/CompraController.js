@@ -1,9 +1,21 @@
+const { validate } = require('class-validator');
+const CompraDTO = require('../dtos/CompraDTO');
 const CompraService = require('../services/CompraService');
 
 class CompraController {
   async create(req, res) {
     try {
-      const compra = await CompraService.create(req.body);
+      const compraDTO = new CompraDTO();
+      Object.assign(compraDTO, req.body); // Copia os dados do corpo da requisição para o DTO
+
+      // Valida o DTO
+      const errors = await validate(compraDTO);
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
+      }
+
+      // Chama o serviço passando o DTO
+      const compra = await CompraService.create(compraDTO);
       res.status(201).json(compra);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -33,7 +45,16 @@ class CompraController {
 
   async update(req, res) {
     try {
-      const compra = await CompraService.update(req.params.id, req.body);
+      const compraDTO = new CompraDTO();
+      Object.assign(compraDTO, req.body); // Copia os dados do corpo da requisição para o DTO
+
+      // Valida o DTO
+      const errors = await validate(compraDTO);
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
+      }
+
+      const compra = await CompraService.update(req.params.id, compraDTO);
       res.status(200).json(compra);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -62,6 +83,12 @@ class CompraController {
     try {
       const { compraId } = req.params;
       const { produtos } = req.body;
+
+      // Validação básica dos produtos (opcional)
+      if (!produtos || !Array.isArray(produtos)) {
+        return res.status(400).json({ error: 'Produtos devem ser um array' });
+      }
+
       await CompraService.addProdutosToCompra(compraId, produtos);
       res.status(200).json({ message: 'Produtos adicionados à compra com sucesso' });
     } catch (error) {

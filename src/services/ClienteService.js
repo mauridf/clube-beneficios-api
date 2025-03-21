@@ -3,10 +3,20 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 class ClienteService {
-  async create(clienteData) {
+  async create(clienteDTO) {
     // Gera o hash da senha
     const salt = bcrypt.genSaltSync(10);
-    clienteData.senha = bcrypt.hashSync(clienteData.senha, salt);
+    clienteDTO.senha = bcrypt.hashSync(clienteDTO.senha, salt);
+
+    // Mapeia o DTO para o modelo do banco de dados
+    const clienteData = {
+      nome: clienteDTO.nome,
+      email: clienteDTO.email,
+      senha: clienteDTO.senha,
+      tipoUsuario: clienteDTO.tipoUsuario,
+    };
+
+    // Salva no banco de dados
     return await ClienteRepository.create(clienteData);
   }
 

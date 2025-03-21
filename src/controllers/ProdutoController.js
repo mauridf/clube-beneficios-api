@@ -1,9 +1,21 @@
+const { validate } = require('class-validator');
+const ProdutoDTO = require('../dtos/ProdutoDTO');
 const ProdutoService = require('../services/ProdutoService');
 
 class ProdutoController {
   async create(req, res) {
     try {
-      const produto = await ProdutoService.create(req.body);
+      const produtoDTO = new ProdutoDTO();
+      Object.assign(produtoDTO, req.body); // Copia os dados do corpo da requisição para o DTO
+
+      // Valida o DTO
+      const errors = await validate(produtoDTO);
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
+      }
+
+      // Chama o serviço passando o DTO
+      const produto = await ProdutoService.create(produtoDTO);
       res.status(201).json(produto);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -33,7 +45,16 @@ class ProdutoController {
 
   async update(req, res) {
     try {
-      const produto = await ProdutoService.update(req.params.id, req.body);
+      const produtoDTO = new ProdutoDTO();
+      Object.assign(produtoDTO, req.body); // Copia os dados do corpo da requisição para o DTO
+
+      // Valida o DTO
+      const errors = await validate(produtoDTO);
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
+      }
+
+      const produto = await ProdutoService.update(req.params.id, produtoDTO);
       res.status(200).json(produto);
     } catch (error) {
       res.status(400).json({ error: error.message });

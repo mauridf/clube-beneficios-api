@@ -1,7 +1,16 @@
 const ProdutoRepository = require('../repositories/ProdutoRepository');
 
 class ProdutoService {
-  async create(produtoData) {
+  async create(produtoDTO) {
+    // Mapeia o DTO para o modelo do banco de dados
+    const produtoData = {
+      nome: produtoDTO.nome,
+      descricao: produtoDTO.descricao,
+      preco: produtoDTO.preco,
+      categoria: produtoDTO.categoria,
+    };
+
+    // Salva no banco de dados
     return await ProdutoRepository.create(produtoData);
   }
 
@@ -13,7 +22,16 @@ class ProdutoService {
     return await ProdutoRepository.findById(id);
   }
 
-  async update(id, produtoData) {
+  async update(id, produtoDTO) {
+    // Mapeia o DTO para o modelo do banco de dados
+    const produtoData = {
+      nome: produtoDTO.nome,
+      descricao: produtoDTO.descricao,
+      preco: produtoDTO.preco,
+      categoria: produtoDTO.categoria,
+    };
+
+    // Atualiza no banco de dados
     return await ProdutoRepository.update(id, produtoData);
   }
 
