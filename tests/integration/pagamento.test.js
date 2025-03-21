@@ -44,4 +44,32 @@ describe('Pagamento API', () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body.status).toEqual('pago'); // Verifica se o status foi atualizado
   });
+
+  it('deve atualizar o status da compra para "pago" quando o pagamento for finalizado', async () => {
+    // Cria uma compra pendente
+    const compra = await Compra.create({
+      status: 'pendente',
+    });
+
+    // Cria um pagamento pendente associado à compra
+    const pagamento = await Pagamento.create({
+      valor: 4500.00,
+      status: 'pendente',
+      compraId: compra.id,
+    });
+
+    // Atualiza o status do pagamento para "pago"
+    const res = await request(app)
+      .put(`/api/pagamentos/${pagamento.id}`)
+      .send({
+        status: 'pago',
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.status).toEqual('pago'); // Verifica se o pagamento foi atualizado
+
+    // Verifica se o status da compra foi atualizado para "pago"
+    const compraAtualizada = await Compra.findByPk(compra.id);
+    expect(compraAtualizada.status).toEqual('pago');
+  });
 });
