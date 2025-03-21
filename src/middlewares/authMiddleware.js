@@ -10,7 +10,8 @@ function authMiddleware(req, res, next) {
     if (err) {
       return res.status(401).json({ error: 'Token inválido' });
     }
-    req.userId = decoded.id;
+    req.userId = decoded.id; // Adiciona o ID do usuário à requisição
+    req.tipoUsuario = decoded.tipoUsuario; // Adiciona o tipo de usuário à requisição
     next();
   });
 }

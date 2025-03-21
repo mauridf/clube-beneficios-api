@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 
 class ClienteService {
   async create(clienteData) {
-    clienteData.senha = bcrypt.hashSync(clienteData.senha, 10);
+    // Gera o hash da senha
+    const salt = bcrypt.genSaltSync(10);
+    clienteData.senha = bcrypt.hashSync(clienteData.senha, salt);
     return await ClienteRepository.create(clienteData);
   }
 
@@ -25,7 +27,8 @@ class ClienteService {
     if (!cliente || !bcrypt.compareSync(senha, cliente.senha)) {
       throw new Error('Credenciais inválidas');
     }
-    const token = jwt.sign({ id: cliente.id }, 'secret', { expiresIn: '1h' });
+    // Gera o token JWT
+    const token = jwt.sign({ id: cliente.id, tipoUsuario: cliente.tipoUsuario }, 'secret', { expiresIn: '1h' });
     return { token };
   }
 }

@@ -12,7 +12,7 @@ const Cliente = sequelize.define('Cliente', {
     unique: true,
   },
   senha: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(100), // Aumento do tamanho para armazenar o hash
     allowNull: false,
   },
   tipoUsuario: {
