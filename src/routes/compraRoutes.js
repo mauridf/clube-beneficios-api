@@ -18,4 +18,7 @@ router.get('/clientes/:clienteId/compras', authMiddleware, CompraController.find
 router.post('/compras/:compraId/produtos', authMiddleware, CompraController.addProdutos);
 router.get('/compras/:compraId/produtos', authMiddleware, CompraController.getProdutos);
 
+// Rota para gerar relatório de vendas
+router.get('/relatorios/vendas', authMiddleware, CompraController.gerarRelatorioVendas);
+
 module.exports = router;

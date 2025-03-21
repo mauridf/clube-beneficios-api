@@ -50,6 +50,27 @@ class CompraRepository {
     }
     return compra.Produtos;
   }
+
+  async gerarRelatorioVendas() {
+    const relatorio = await Compra.findAll({
+      attributes: [
+        [sequelize.fn('COUNT', sequelize.col('id')), 'totalVendas'],
+        [sequelize.fn('SUM', sequelize.col('valor')), 'valorTotalVendas'],
+        [sequelize.fn('COUNT', sequelize.literal('CASE WHEN status = "pendente" THEN 1 END')), 'vendasPendentes'],
+        [sequelize.fn('COUNT', sequelize.literal('CASE WHEN status = "pago" THEN 1 END')), 'vendasPagas'],
+      ],
+      include: [
+        {
+          model: Pagamento,
+          attributes: [], // Não retorna detalhes dos pagamentos
+        },
+      ],
+      group: ['status'], // Agrupa por status
+      raw: true, // Retorna dados brutos (sem instâncias do Sequelize)
+    });
+
+    return relatorio;
+  }
 }
 
 module.exports = new CompraRepository();

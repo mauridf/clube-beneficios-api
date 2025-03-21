@@ -32,6 +32,21 @@ class CompraService {
   async getProdutosFromCompra(compraId) {
     return await CompraRepository.getProdutosFromCompra(compraId);
   }
+
+  async gerarRelatorioVendas() {
+    const relatorio = await CompraRepository.gerarRelatorioVendas();
+
+    // Formata o relatório para uma estrutura mais amigável
+    const resultado = {
+      totalVendas: relatorio.reduce((acc, item) => acc + item.totalVendas, 0),
+      valorTotalVendas: relatorio.reduce((acc, item) => acc + item.valorTotalVendas, 0),
+      vendasPendentes: relatorio.find((item) => item.status === 'pendente')?.totalVendas || 0,
+      vendasPagas: relatorio.find((item) => item.status === 'pago')?.totalVendas || 0,
+      detalhes: relatorio,
+    };
+
+    return resultado;
+  }
 }
 
 module.exports = new CompraService();

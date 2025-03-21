@@ -78,6 +78,15 @@ class CompraController {
       res.status(400).json({ error: error.message });
     }
   }
+
+  async gerarRelatorioVendas(req, res) {
+    try {
+      const relatorio = await CompraService.gerarRelatorioVendas();
+      res.status(200).json(relatorio);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
 }
 
 module.exports = new CompraController();
