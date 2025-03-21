@@ -1,4 +1,5 @@
 const CompraRepository = require('../repositories/CompraRepository');
+const validator = require('validator');
 
 class CompraService {
   async create(compraDTO) {
@@ -6,7 +7,7 @@ class CompraService {
     const compraData = {
       clienteId: compraDTO.clienteId,
       produtos: compraDTO.produtos,
-      status: compraDTO.status,
+      status: validator.escape(compraDTO.status),
     };
 
     // Salva no banco de dados
@@ -26,7 +27,7 @@ class CompraService {
     const compraData = {
       clienteId: compraDTO.clienteId,
       produtos: compraDTO.produtos,
-      status: compraDTO.status,
+      status: validator.escape(compraDTO.status),
     };
 
     // Atualiza no banco de dados

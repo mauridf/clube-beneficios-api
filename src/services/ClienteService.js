@@ -1,4 +1,5 @@
 const ClienteRepository = require('../repositories/ClienteRepository');
+const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -10,10 +11,10 @@ class ClienteService {
 
     // Mapeia o DTO para o modelo do banco de dados
     const clienteData = {
-      nome: clienteDTO.nome,
-      email: clienteDTO.email,
+      nome: validator.escape(clienteDTO.nome), // Remove caracteres perigosos do nome
+      email: validator.normalizeEmail(clienteDTO.email), // Normaliza o email (remove espaços, converte para minúsculas, etc.)
       senha: clienteDTO.senha,
-      tipoUsuario: clienteDTO.tipoUsuario,
+      tipoUsuario: validator.escape(clienteDTO.tipoUsuario),
     };
 
     // Salva no banco de dados

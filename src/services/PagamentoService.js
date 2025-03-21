@@ -1,11 +1,12 @@
 const PagamentoRepository = require('../repositories/PagamentoRepository');
+const validator = require('validator');
 
 class PagamentoService {
   async create(pagamentoDTO) {
     // Mapeia o DTO para o modelo do banco de dados
     const pagamentoData = {
-      valor: pagamentoDTO.valor,
-      status: pagamentoDTO.status,
+      valor: parseFloat(pagamentoDTO.valor), // Converte para número
+      status: validator.escape(pagamentoDTO.status),
       compraId: pagamentoDTO.compraId,
     };
 
@@ -24,8 +25,8 @@ class PagamentoService {
   async update(id, pagamentoDTO) {
     // Mapeia o DTO para o modelo do banco de dados
     const pagamentoData = {
-      valor: pagamentoDTO.valor,
-      status: pagamentoDTO.status,
+      valor: parseFloat(pagamentoDTO.valor), // Converte para número
+      status: validator.escape(pagamentoDTO.status),
       compraId: pagamentoDTO.compraId,
     };
 

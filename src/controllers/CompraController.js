@@ -16,8 +16,10 @@ class CompraController {
 
       // Chama o serviço passando o DTO
       const compra = await CompraService.create(compraDTO);
+      logger.info('Compra cadastrada com sucesso');
       res.status(201).json(compra);
     } catch (error) {
+      logger.error(`Erro ao cadastrar a Compra: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -25,8 +27,10 @@ class CompraController {
   async findAll(req, res) {
     try {
       const compras = await CompraService.findAll();
+      logger.info('Listagem das compras realizada com sucesso');
       res.status(200).json(compras);
     } catch (error) {
+      logger.error(`Erro ao listar compras: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -37,8 +41,10 @@ class CompraController {
       if (!compra) {
         return res.status(404).json({ error: 'Compra não encontrada' });
       }
+      logger.info('Compra localizada com sucesso');
       res.status(200).json(compra);
     } catch (error) {
+      logger.error(`Erro ao localizar compra: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -55,8 +61,10 @@ class CompraController {
       }
 
       const compra = await CompraService.update(req.params.id, compraDTO);
+      logger.info('Compra atualizada com sucesso');
       res.status(200).json(compra);
     } catch (error) {
+      logger.error(`Erro ao atualizar a compra: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -64,8 +72,10 @@ class CompraController {
   async delete(req, res) {
     try {
       await CompraService.delete(req.params.id);
+      logger.info('Compra deletada com sucesso');
       res.status(204).send();
     } catch (error) {
+      logger.error(`Erro ao deletar a compra: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -73,8 +83,10 @@ class CompraController {
   async findByClienteId(req, res) {
     try {
       const compras = await CompraService.findByClienteId(req.params.clienteId);
+      logger.info('Compra do Cliente localizada com sucesso');
       res.status(200).json(compras);
     } catch (error) {
+      logger.error(`Erro ao localizar compra do cliente: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -90,8 +102,10 @@ class CompraController {
       }
 
       await CompraService.addProdutosToCompra(compraId, produtos);
+      logger.info('Produtos adicionados à compra com sucesso');
       res.status(200).json({ message: 'Produtos adicionados à compra com sucesso' });
     } catch (error) {
+      logger.error(`Erro ao adicionar Produtos à compra: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -100,8 +114,10 @@ class CompraController {
     try {
       const { compraId } = req.params;
       const produtos = await CompraService.getProdutosFromCompra(compraId);
+      logger.info('Produtos que fazem parte da Compra localizados com sucesso');
       res.status(200).json(produtos);
     } catch (error) {
+      logger.error(`Erro ao listar os produtos que fazem parte da Compra: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -109,8 +125,10 @@ class CompraController {
   async gerarRelatorioVendas(req, res) {
     try {
       const relatorio = await CompraService.gerarRelatorioVendas();
+      logger.info('Relatório de Vendas Agregadas gerado com sucesso');
       res.status(200).json(relatorio);
     } catch (error) {
+      logger.error(`Erro ao gerar relatório de vendas agregadas: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }

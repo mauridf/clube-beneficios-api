@@ -1,6 +1,7 @@
 const { validate } = require('class-validator');
 const ClienteDTO = require('../dtos/ClienteDTO');
 const ClienteService = require('../services/ClienteService');
+const logger = require('../config/logger');
 
 class ClienteController {
   async create(req, res) {
@@ -16,8 +17,10 @@ class ClienteController {
 
       // Chama o serviço passando o DTO
       const cliente = await ClienteService.create(clienteDTO);
+      logger.info('Cliente cadastrado com sucesso');
       res.status(201).json(cliente);
     } catch (error) {
+      logger.error(`Erro ao cadastrar um cliente: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -25,8 +28,10 @@ class ClienteController {
   async findAll(req, res) {
     try {
       const clientes = await ClienteService.findAll();
+      logger.info('Listagem de clientes realizada com sucesso');
       res.status(200).json(clientes);
     } catch (error) {
+      logger.error(`Erro ao listar clientes: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -41,8 +46,10 @@ class ClienteController {
       }
 
       const token = await ClienteService.login(email, senha);
+      logger.info('Login efetuado com sucesso e token gerado');
       res.status(200).json(token);
     } catch (error) {
+      logger.error(`Erro ao efetuar Login e gerar o token: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }

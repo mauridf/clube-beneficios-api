@@ -16,8 +16,10 @@ class PagamentoController {
 
       // Chama o serviço passando o DTO
       const pagamento = await PagamentoService.create(pagamentoDTO);
+      logger.info('Pagamento efetuado com sucesso');
       res.status(201).json(pagamento);
     } catch (error) {
+      logger.error(`Erro ao efetuar o pagamento: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -25,8 +27,10 @@ class PagamentoController {
   async findAll(req, res) {
     try {
       const pagamentos = await PagamentoService.findAll();
+      logger.info('Listagem dos pagamentos efetuados com sucesso');
       res.status(200).json(pagamentos);
     } catch (error) {
+      logger.error(`Erro ao listar os pagamentos efetuados: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -37,8 +41,10 @@ class PagamentoController {
       if (!pagamento) {
         return res.status(404).json({ error: 'Pagamento não encontrado' });
       }
+      logger.info('Pagamento foi localizado');
       res.status(200).json(pagamento);
     } catch (error) {
+      logger.error(`Erro ao localizar Pagamento: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -55,8 +61,10 @@ class PagamentoController {
       }
 
       const pagamento = await PagamentoService.update(req.params.id, pagamentoDTO);
+      logger.info('Pagamento atualizado com sucesso');
       res.status(200).json(pagamento);
     } catch (error) {
+      logger.error(`Erro ao atualizar o pagmento: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -64,8 +72,10 @@ class PagamentoController {
   async delete(req, res) {
     try {
       await PagamentoService.delete(req.params.id);
+      logger.info('Pagamento deletado com sucesso');
       res.status(204).send();
     } catch (error) {
+      logger.error(`Erro ao deletar o pagamento: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
@@ -76,8 +86,10 @@ class PagamentoController {
       if (!pagamento) {
         return res.status(404).json({ error: 'Pagamento não encontrado' });
       }
+      logger.info('Pagamento da Compra localizado');
       res.status(200).json(pagamento);
     } catch (error) {
+      logger.error(`Erro ao localizar o pagamento da compra: ${error.message}`);
       res.status(400).json({ error: error.message });
     }
   }
