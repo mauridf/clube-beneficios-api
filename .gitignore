@@ -1,0 +1,54 @@
+# Ignorar a pasta node_modules
+node_modules/
+
+# Ignorar arquivos de ambiente
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Ignorar logs
+logs/
+*.log
+
+# Ignorar arquivos de configuração local
+*.local
+
+# Ignorar arquivos de IDE
+.vscode/
+.idea/
+
+# Ignorar arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar arquivos de build/dist
+dist/
+build/
+
+# Ignorar cache do Babel
+.babel-cache/
+
+# Ignorar cache do npm/yarn
+.npm
+.yarn
+.yarn-cache
+.pnp*
+
+# Ignorar arquivos de dependências
+package-lock.json
+yarn.lock
+
+# Ignorar arquivos de debug
+*.pid
+*.seed
+*.pid.lock
+
+# Ignorar arquivos de cobertura de testes
+coverage/
+.nyc_output/
+
+# Ignorar arquivos temporários
+*.tmp
+*.temp
