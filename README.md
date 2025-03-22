@@ -136,6 +136,8 @@ A API estará disponível em `http://localhost:3000`.
 
 - `GET /api/clientes/:clienteId/compras`: Lista as compras de um cliente específico.
 
+- `GET /api/relatorios/vendas`: Gera um relatório de vendas agregadas.
+
 ### 📌 Pagamentos
 
 - `POST /api/pagamentos`: Cadastra um novo pagamento.
